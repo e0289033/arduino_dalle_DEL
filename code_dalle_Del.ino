@@ -16,22 +16,43 @@
 // create a display object of type TM1637Display
 TM1637Display display = TM1637Display(CLK, DIO);
 
-ezButton limitSwitch(7);  // create ezButton object that attach to pin 7;
+ezButton limitSwitchA(7);  // create ezButton object that attach to pin 7;
+ezButton limitSwitchB(4);  // create ezButton object that attach to pin 7;
+
 int points = 0;
+const int limitSwitchAPointBonus = 1;
+const int limitSwitchBPointBonus = 5;
+
+
 void setup() {
   display.clear();
   display.setBrightness(7);
   Serial.begin(9600);
-  limitSwitch.setDebounceTime(50); // set debounce time to 50 milliseconds
+  limitSwitchA.setDebounceTime(0); // set debounce time to 50 milliseconds
+  limitSwitchA.setDebounceTime(0); // set debounce time to 50 milliseconds
 }
 
+
 void loop() {
-  limitSwitch.loop(); // MUST call the loop() function first
-  if(limitSwitch.isPressed()){
+  
+  limitSwitchA.loop(); // MUST call the loop() function first
+  limitSwitchB.loop(); // MUST call the loop() function first
+
+  UpdatePoints();
+  display.showNumberDec(points);
+}
+
+void UpdatePoints()
+{
+    //limitSwitchA check
+    if(limitSwitchA.isPressed()){
       display.clear();
-      points ++;
+      points = points + limitSwitchAPointBonus;
   }
 
-
-  display.showNumberDec(points);
+    //limitSwitchB check
+    if(limitSwitchB.isPressed()){
+      display.clear();
+      points = points + limitSwitchBPointBonus;
+  }
 }
