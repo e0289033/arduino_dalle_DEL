@@ -16,21 +16,19 @@
 // create a display object of type TM1637Display
 TM1637Display display = TM1637Display(CLK, DIO);
 
-const int ledPin1A =  13;
-const int ledPin2A =  13; 
-const int ledPin3B =  13; 
-const int ledPin4B =  13; 
+const int ledPin1A =  2;
+const int ledPin2A =  3; 
+const int ledPin3B =  4; 
+const int ledPin4B =  5; 
 
 int ledStateA = LOW;
 int ledStateB = LOW;
 
 int slidePin = 0;
-
 int slideState = LOW;
 
 
 long previousMillis = 0;
-
 long ledInterval = 1000;
 
 ezButton limitSwitchA(7);  // create limitSwitch object that attach to pin 7
@@ -51,7 +49,7 @@ void setup() {
   display.clear();
   display.setBrightness(7);
   Serial.begin(9600);
-  limitSwitchA.setDebounceTime(0); // set debounce time to 50 milliseconds
+  limitSwitchA.setDebounceTime(50); // set debounce time to 50 milliseconds
 }
 
 
@@ -85,10 +83,10 @@ void UpdatePoints()
     //limitSwitchA check
     if(limitSwitchA.isPressed()){
       display.clear();
-      points + limitSwitchAPointBonus;
+      points = points + limitSwitchAPointBonus;
     }
     if(slideState == HIGH){
-      points + slidePointBonus;
+      points = points + slidePointBonus;
     }
 }
 
